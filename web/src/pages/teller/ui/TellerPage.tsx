@@ -29,7 +29,7 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-2.5">
       <span className="h-[15px] w-1 rounded-sm bg-kb-yellow" aria-hidden="true" />
-      <h2 className="m-0 text-[17px] font-bold leading-none text-primary">{children}</h2>
+      <h2 className="m-0 whitespace-nowrap text-[17px] font-bold leading-none text-primary">{children}</h2>
     </div>
   )
 }
@@ -37,12 +37,12 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
 function HomeWorkspace() {
   return (
     <motion.section
-      className="flex h-full min-w-0 flex-1 flex-col overflow-hidden rounded-xl border border-border-subtle bg-surface"
+      className="flex h-full min-w-[900px] flex-1 flex-col overflow-hidden rounded-xl border border-border-subtle bg-surface"
       initial={{ opacity: 0, y: 5 }}
       animate={{ opacity: 1, y: 0 }}
     >
-      <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-8 py-7">
-        <header className="flex flex-col gap-1.5">
+      <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden px-8 py-7">
+        <header className="flex shrink-0 flex-col gap-1.5">
           <div className="flex items-center gap-2.5">
             <span className="h-5 w-1 rounded-sm bg-kb-yellow" aria-hidden="true" />
             <h1 className="m-0 text-2xl font-bold leading-none">안녕하세요, 최영환 님</h1>
@@ -50,43 +50,43 @@ function HomeWorkspace() {
           <p className="m-0 text-[15px] text-secondary">오늘의 업무를 선택하면 필요한 규정과 지점 팁이 준비됩니다.</p>
         </header>
 
-        <section className="grid grid-cols-3 overflow-hidden rounded-[10px] border border-border-subtle bg-white">
+        <section className="grid shrink-0 grid-cols-3 overflow-hidden rounded-[10px] border border-border-subtle bg-white">
           {[
             ['우리 지점 활성 지식', '142건', ''],
             ['오늘 승인된 팁', '2건', ''],
             ['규정 개정 알림', '1건', 'text-[#c41e1e]'],
           ].map(([label, value, tone], index) => (
             <div className={`flex flex-col gap-1.5 px-5 py-4 ${index < 2 ? 'border-r border-border-subtle' : ''}`} key={label}>
-              <span className="text-[13px] text-secondary">{label}</span>
+              <span className="whitespace-nowrap text-[13px] text-secondary">{label}</span>
               <strong className={`text-xl leading-none ${tone}`}>{value}</strong>
             </div>
           ))}
         </section>
 
-        <section className="overflow-hidden rounded-[10px] border border-border-subtle bg-white">
+        <section className="shrink-0 overflow-hidden rounded-[10px] border border-border-subtle bg-white">
           <header className="flex items-center justify-between border-b border-border-subtle px-5 py-3.5">
             <SectionTitle>우리 지점에서 자주 묻는 질문</SectionTitle>
             <span className="text-[13px] text-tertiary">질의 로그 기준</span>
           </header>
           {questions.map(([question, count], index) => (
             <button
-              className={`flex w-full items-center gap-3.5 bg-white px-5 py-[15px] text-left transition-colors hover:bg-[#fafafa] ${index < questions.length - 1 ? 'border-b border-border-subtle' : ''}`}
+              className={`flex h-[52px] w-full shrink-0 items-center gap-3.5 bg-white px-5 text-left transition-colors hover:bg-[#fafafa] ${index < questions.length - 1 ? 'border-b border-border-subtle' : ''}`}
               type="button"
               key={question}
             >
-              <span className="min-w-0 flex-1 text-[15px] font-medium text-primary">{question}</span>
-              <span className="text-[13px] text-secondary">{count}</span>
+              <span className="min-w-0 flex-1 truncate whitespace-nowrap text-[15px] font-medium text-primary">{question}</span>
+              <span className="shrink-0 whitespace-nowrap text-[13px] text-secondary">{count}</span>
               <span className="text-base font-bold text-tertiary" aria-hidden="true">›</span>
             </button>
           ))}
         </section>
 
-        <section className="overflow-hidden rounded-[10px] border border-border-subtle bg-white">
+        <section className="shrink-0 overflow-hidden rounded-[10px] border border-border-subtle bg-white">
           <header className="border-b border-border-subtle px-5 py-3.5"><SectionTitle>우리 지점 실무 팁</SectionTitle></header>
           {tips.map(([title, meta, badge], index) => (
-            <div className={`flex items-center gap-3.5 px-5 py-3.5 ${index < tips.length - 1 ? 'border-b border-border-subtle' : ''}`} key={title}>
+            <div className={`flex min-h-[61px] shrink-0 items-center gap-3.5 px-5 py-3.5 ${index < tips.length - 1 ? 'border-b border-border-subtle' : ''}`} key={title}>
               <div className="flex min-w-0 flex-1 flex-col gap-1">
-                <span className="text-[15px] text-primary">{title}</span>
+                <span className="truncate whitespace-nowrap text-[15px] text-primary">{title}</span>
                 <span className="text-[13px] text-secondary">{meta}</span>
               </div>
               <span className={`rounded-full border px-3 py-1 text-[13px] font-semibold ${badge === '지점 팁' ? 'border-kb-yellow text-primary' : 'border-border-default bg-[#f8f8f9] text-secondary'}`}>{badge}</span>
@@ -190,7 +190,7 @@ export function TellerPage() {
   const openDocuments = useCallback(() => { setShowDocuments(true); setIsModalOpen(false) }, [])
 
   return (
-    <main className="flex h-screen min-h-[720px] flex-col bg-canvas text-primary">
+    <main className="flex h-screen min-h-[810px] min-w-[1440px] flex-col bg-canvas text-primary">
       <header className="flex h-16 shrink-0 items-center justify-between px-7">
         <div className="flex items-center gap-3.5"><KbBrandLogo className="!h-6" /><span className="h-[18px] w-px bg-border-default" /><strong className="text-[15px]">속마음 업무지원</strong></div>
         <div className="flex items-center gap-4 text-[15px]"><strong>잠실역지점</strong><span className="h-[18px] w-px bg-border-default" /><span>최영환 (L1)</span><time className="text-secondary" dateTime={koreaTime.iso}>{koreaTime.clock}</time><button className="rounded-full border border-border-default bg-white px-[18px] py-2 text-sm font-bold">로그아웃</button></div>
