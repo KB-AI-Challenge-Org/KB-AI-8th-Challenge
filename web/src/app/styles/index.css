@@ -1,0 +1,17 @@
+@import 'tailwindcss';
+@import './tokens.css';
+@import './global.css';
+
+@theme inline {
+  --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --color-canvas: var(--bg-canvas);
+  --color-surface: var(--bg-surface);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-default: var(--border-default);
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-tertiary: var(--text-tertiary);
+  --color-kb-yellow: var(--kb-yellow);
+  --color-panel: var(--panel-bg);
+}
+
