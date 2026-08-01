@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 
 import { useKoreaTime } from '../../../shared/lib/useKoreaTime'
-import { KbBrandLogo } from '../../../shared/ui/KbBrandLogo'
+import { KbBrandLogo, MindMark } from '../../../shared/ui/KbBrandLogo'
 import { AssistantPanel } from '../../../widgets/assistant-panel/ui/AssistantPanel'
 
 const questions = [
@@ -19,9 +19,9 @@ const tips = [
 ]
 
 const documents = [
-  ['본인 신분증', '주민등록증·운전면허증 원본으로 본인 확인', '필수'],
-  ['서민금융진흥원 대상자 확인', '앱 가입 신청 후 심사 결과 자동 연동 — 별도 서류 없음', '자동 확인'],
-  ['청년도약계좌 해지 동의', '갈아타기 고객만 — 특별중도해지 동의 확인', '서류 보기'],
+  ['본인 확인', 'KB스타뱅킹 본인인증으로 가입 신청', '필수'],
+  ['서민금융진흥원 가입요건 확인', '연계정보로 심사 — 필요 시 추가 증빙', '자동 확인'],
+  ['청년도약계좌 특별중도해지 확인', '청년미래적금 계좌 개설 후 기존 계좌 특별중도해지', '서류 보기'],
   ['자동이체 등록 정보', '우대금리용 — 급여이체·적금 자동이체 계좌 지정', '선택'],
 ]
 
@@ -102,87 +102,110 @@ function DocumentModal({ onClose }: { onClose: () => void }) {
   return (
     <motion.div className="absolute inset-0 z-20 flex items-center justify-center bg-[#17181a]/40 p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <motion.section
-        className="flex max-h-full w-[720px] flex-col overflow-hidden rounded-xl border border-border-default bg-white shadow-[0_24px_64px_rgba(23,24,26,0.28)]"
+        className="flex max-h-full w-[744px] flex-col overflow-hidden rounded-xl border border-border-default bg-white shadow-[0_24px_64px_rgba(23,24,26,0.28)]"
         initial={{ opacity: 0, y: 12, scale: 0.985 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 8, scale: 0.99 }}
       >
         <header className="flex shrink-0 items-center justify-between border-b border-border-subtle px-6 py-4">
           <div>
-            <strong className="block text-[17px]">청년도약계좌 해지 동의서</strong>
-            <span className="mt-1 block text-xs text-secondary">서류 원문 미리보기 · 고객 서명 필요</span>
+            <strong className="block text-[17px]">청년도약계좌 특별중도해지 신청·확인서</strong>
+            <span className="mt-1 block text-xs text-secondary">시연용 서류 미리보기 · 고객 확인 필요</span>
           </div>
           <button className="grid h-8 w-8 place-items-center rounded-lg text-lg text-secondary hover:bg-[#f3f4f5]" onClick={onClose} aria-label="상세 창 닫기">×</button>
         </header>
 
-        <div className="min-h-0 flex-1 overflow-y-auto bg-[#eceef0] px-10 py-7">
-          <article className="mx-auto min-h-[760px] w-[560px] border border-[#d9dbde] bg-white px-12 py-10 shadow-[0_4px_18px_rgba(32,33,36,0.10)]">
-            <div className="flex items-start justify-between border-b-2 border-primary pb-5">
-              <KbBrandLogo className="!h-5" />
+        <div className="min-h-0 flex-1 overflow-y-auto bg-[#dfe2e5] px-12 py-8">
+          <article className="relative mx-auto min-h-[792px] w-[560px] overflow-hidden border border-[#d2cec4] bg-[repeating-linear-gradient(0deg,#fffefb_0px,#fffefb_3px,#fbfaf5_4px)] px-12 py-10 text-[#202020] shadow-[0_2px_4px_rgba(34,36,38,0.12),0_16px_38px_rgba(34,36,38,0.18)]">
+            <span className="pointer-events-none absolute inset-0 shadow-[inset_0_0_58px_rgba(98,87,66,0.055)]" aria-hidden="true" />
+
+            <div className="relative flex items-start justify-between border-b-[3px] border-double border-primary pb-5">
+              <div>
+                <KbBrandLogo className="!h-5" />
+                <p className="mb-0 mt-2 text-[10px] font-semibold tracking-[0.12em] text-secondary">고객 확인 문서</p>
+              </div>
               <div className="text-right text-[11px] leading-5 text-secondary">
-                <p className="m-0">문서번호 KB-YF-2026-0730</p>
-                <p className="m-0">보존기간 5년</p>
+                <p className="m-0 font-bold text-primary">시연용 예시 서식</p>
+                <p className="m-0">공식 신청은 KB스타뱅킹에서 진행</p>
               </div>
             </div>
 
-            <div className="py-8 text-center">
-              <p className="m-0 text-xs font-semibold tracking-[0.22em] text-secondary">KB청년미래적금 전환 가입용</p>
-              <h2 className="mb-0 mt-3 text-[25px] tracking-[-0.03em]">청년도약계좌 해지 동의서</h2>
+            <div className="relative py-7 text-center">
+              <p className="m-0 text-[11px] font-semibold tracking-[0.2em] text-secondary">청년미래적금 갈아타기</p>
+              <h2 className="mb-0 mt-3 text-[24px] tracking-[-0.035em]">청년도약계좌 특별중도해지<br />신청·확인서</h2>
             </div>
 
-            <p className="m-0 text-[13px] leading-6 text-secondary">
-              본인은 KB청년미래적금 전환 가입을 위하여 아래 청년도약계좌를 특별중도해지하고,
-              관련 정보를 확인·처리하는 것에 동의합니다.
+            <p className="relative m-0 text-[13px] leading-[1.8] text-[#3f4144]">
+              본인은 KB청년미래적금 가입 승인 및 계좌 개설을 완료하였으며, 최초 가입기간 내 갈아타기를 위해
+              아래 청년도약계좌의 특별중도해지를 신청합니다.
             </p>
 
-            <div className="mt-6 border-y-2 border-primary text-[13px]">
+            <div className="relative mt-5 border-y-2 border-primary text-[13px]">
               {[
                 ['성명', '이○○', '생년월일', '00. 00. 00.'],
                 ['계좌번호', '110-***-******', '가입일', '2024. 03. 15.'],
-                ['해지 구분', '특별중도해지', '전환 상품', 'KB청년미래적금'],
+                ['해지 구분', '특별중도해지', '신규 상품', 'KB청년미래적금'],
               ].map(([labelA, valueA, labelB, valueB]) => (
                 <div className="grid grid-cols-[84px_1fr_84px_1fr] border-b border-border-default last:border-b-0" key={labelA}>
-                  <strong className="bg-[#f5f6f7] px-3 py-3">{labelA}</strong>
+                  <strong className="bg-[#f1f0eb] px-3 py-3">{labelA}</strong>
                   <span className="px-3 py-3">{valueA}</span>
-                  <strong className="border-l border-border-default bg-[#f5f6f7] px-3 py-3">{labelB}</strong>
+                  <strong className="border-l border-border-default bg-[#f1f0eb] px-3 py-3">{labelB}</strong>
                   <span className="px-3 py-3">{valueB}</span>
                 </div>
               ))}
             </div>
 
-            <section className="mt-7">
+            <section className="relative mt-6">
+              <h3 className="m-0 border-b border-primary pb-2 text-sm">갈아타기 처리 순서</h3>
+              <div className="mt-3 grid grid-cols-3 border-y border-border-default text-center text-[11px] leading-[1.55]">
+                {[
+                  ['01', '가입 신청·심사', '가입 가능 통보 확인'],
+                  ['02', '미래적금 개설', '신규 계좌 먼저 개설'],
+                  ['03', '도약계좌 해지', '기존 계좌 특별중도해지'],
+                ].map(([number, title, detail], index) => (
+                  <div className={`px-2 py-3 ${index < 2 ? 'border-r border-border-default' : ''}`} key={number}>
+                    <span className="font-black text-[#8b7420]">{number}</span>
+                    <strong className="mt-1 block text-[12px]">{title}</strong>
+                    <span className="mt-1 block text-secondary">{detail}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section className="relative mt-6">
               <h3 className="m-0 text-sm">동의 및 확인 사항</h3>
               <div className="mt-3 flex flex-col gap-3 text-[13px] leading-5 text-secondary">
                 {[
-                  '청년도약계좌 특별중도해지에 따른 기본·우대금리 적용 내용을 안내받았습니다.',
-                  '전환 가입 완료 후 기존 청년도약계좌는 복구할 수 없음을 확인했습니다.',
-                  '전환 가입 심사 및 계좌 개설을 위한 정보 제공에 동의합니다.',
+                  'KB청년미래적금 계좌 개설 전에 청년도약계좌를 해지하면 갈아타기로 인정되지 않음을 확인했습니다.',
+                  '갈아타기 특별중도해지 시 정부기여금과 이자소득 비과세 혜택이 유지됨을 안내받았습니다.',
+                  '적용 금리는 KB 청년도약계좌 특약 및 실제 우대금리 충족 여부에 따라 결정됨을 확인했습니다.',
                 ].map((item) => (
                   <div className="flex items-start gap-3" key={item}>
-                    <span className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center border border-primary text-[10px] font-bold">✓</span>
+                    <span className="grid h-[18px] w-[18px] shrink-0 place-items-center border border-primary bg-white text-xs font-bold leading-none">✓</span>
                     <span>{item}</span>
                   </div>
                 ))}
               </div>
             </section>
 
-            <div className="mt-8 rounded-sm border border-border-default bg-[#fafafa] px-5 py-4 text-[12px] leading-5 text-secondary">
-              본 동의서는 고객의 의사 확인을 위한 서류이며, 상품 가입 조건 및 세부 사항은
-              KB청년미래적금 상품설명서와 약관을 따릅니다.
+            <div className="relative mt-6 border border-[#c9c5bb] bg-[#f4f2ec]/80 px-5 py-3.5 text-[11px] leading-[1.65] text-secondary">
+              본 문서는 서비스 시연을 위한 고객 확인서 예시이며 KB국민은행의 공식 신청서가 아닙니다.
+              실제 가입·해지 절차와 적용 금리는 KB스타뱅킹 및 최신 상품설명서·특약을 우선합니다.
             </div>
 
-            <div className="mt-9 text-center">
+            <div className="relative mt-7 text-center">
               <p className="m-0 text-sm font-semibold">2026년 07월 30일</p>
-              <div className="mt-6 flex items-end justify-end gap-4">
+              <div className="mt-5 flex items-end justify-end gap-4 pr-2">
                 <span className="text-[13px] text-secondary">신청인</span>
                 <strong className="min-w-20 border-b border-primary pb-1 text-center">이○○</strong>
-                <span className="grid h-12 w-20 place-items-center rounded-full border border-dashed border-secondary text-xs text-secondary">(서명)</span>
+                <span className="grid h-12 w-20 place-items-center border-b border-primary text-xs text-secondary">(서명)</span>
+                <span className="absolute -bottom-2 right-4 grid h-[58px] w-[58px] rotate-[-9deg] place-items-center rounded-full border-2 border-[#b84a45]/55 text-center text-[10px] font-black leading-4 text-[#b84a45]/65">시연<br />확인</span>
               </div>
             </div>
 
-            <div className="mt-10 border-t border-border-default pt-4 text-center">
+            <div className="relative mt-9 border-t border-border-default pt-4 text-center">
               <strong className="text-base">KB국민은행 귀중</strong>
-              <p className="mb-0 mt-2 text-[11px] text-tertiary">고객용 전자서명 문서 · 무단 복제 및 외부 배포 금지</p>
+              <p className="mb-0 mt-2 text-[10px] tracking-[0.08em] text-tertiary">SOKMAEUM PROTOTYPE · CUSTOMER CONFIRMATION</p>
             </div>
           </article>
         </div>
@@ -191,8 +214,8 @@ function DocumentModal({ onClose }: { onClose: () => void }) {
           <span className="text-xs text-secondary">1 / 1 페이지</span>
           <div className="flex gap-2">
             <button className="rounded-lg border border-border-default bg-white px-4 py-2 text-sm font-semibold" onClick={onClose}>닫기</button>
-            <button className="rounded-lg border border-border-default bg-white px-4 py-2 text-sm font-semibold">양식 열기</button>
-            <button className="rounded-lg bg-kb-yellow px-4 py-2 text-sm font-bold">공유</button>
+            <button className="rounded-lg border border-border-default bg-white px-4 py-2 text-sm font-semibold">인쇄 미리보기</button>
+            <button className="rounded-lg bg-kb-yellow px-4 py-2 text-sm font-bold">고객 화면에 띄우기</button>
           </div>
         </footer>
       </motion.section>
@@ -225,7 +248,7 @@ function CustomerDisplayModal({
       >
         <header className="flex items-center justify-between border-b border-border-subtle px-6 py-4">
           <div className="flex items-center gap-3">
-            <span className="grid h-9 w-9 place-items-center rounded-[10px] bg-kb-yellow text-sm font-black">S</span>
+            <span className="grid h-9 w-9 place-items-center rounded-[10px] bg-kb-yellow text-primary"><MindMark className="h-6 w-6" /></span>
             <div>
               <strong className="block text-[17px]">고객 화면에 표시</strong>
               <span className="text-xs text-secondary">고객용 서명 화면 미리보기</span>
@@ -238,7 +261,7 @@ function CustomerDisplayModal({
           <div className="flex flex-col items-center px-8 py-10 text-center">
             <span className="grid h-14 w-14 place-items-center rounded-full bg-kb-yellow text-2xl font-black">✓</span>
             <h3 className="mb-0 mt-5 text-xl">고객 화면이 준비되었습니다</h3>
-            <p className="mb-0 mt-2 text-sm leading-6 text-secondary">청년도약계좌 해지 동의 화면을 고객용 디스플레이에 표시할 준비가 완료되었습니다.</p>
+            <p className="mb-0 mt-2 text-sm leading-6 text-secondary">청년도약계좌 특별중도해지 확인 화면을 고객용 디스플레이에 표시할 준비가 완료되었습니다.</p>
             <button className="mt-7 min-w-28 rounded-lg bg-kb-yellow px-5 py-2.5 text-sm font-bold" onClick={onClose}>확인</button>
           </div>
         ) : (
@@ -249,8 +272,8 @@ function CustomerDisplayModal({
                   <span className="rounded-[13px] border border-border-default bg-white px-3 py-1 text-[13px] font-bold text-secondary">고객 서명 필요</span>
                   <span className="text-[13px] font-semibold text-secondary">1건</span>
                 </div>
-                <h3 className="mb-0 mt-4 text-lg">청년도약계좌 해지 동의</h3>
-                <p className="mb-0 mt-2 text-sm leading-6 text-secondary">청년미래적금 가입을 위한 특별중도해지 동의 내용을 고객이 직접 확인하고 서명합니다.</p>
+                <h3 className="mb-0 mt-4 text-lg">청년도약계좌 특별중도해지 확인</h3>
+                <p className="mb-0 mt-2 text-sm leading-6 text-secondary">청년미래적금 계좌 개설 후 진행하는 특별중도해지 내용을 고객이 직접 확인합니다.</p>
                 <div className="mt-4 grid grid-cols-2 overflow-hidden rounded-lg border border-border-subtle bg-white text-sm">
                   <div className="border-r border-border-subtle px-4 py-3"><span className="block text-xs text-tertiary">고객명</span><strong className="mt-1 block">이○○</strong></div>
                   <div className="px-4 py-3"><span className="block text-xs text-tertiary">표시 항목</span><strong className="mt-1 block">동의서 · 전자서명</strong></div>
@@ -309,7 +332,7 @@ function DocumentWorkspace({ isModalOpen, onClose, onOpenModal, onCloseModal }: 
       <div className="mx-8 mt-5 flex items-center justify-between gap-6 rounded-[10px] border border-border-subtle bg-[#f8f8f9] px-5 py-4">
         <div className="flex min-w-0 items-center gap-3">
           <span className="shrink-0 rounded-[13px] border border-border-default bg-white px-3 py-1 text-[13px] font-bold text-secondary">고객 서명 1건</span>
-          <strong className="truncate whitespace-nowrap text-sm">청년도약계좌 해지 동의</strong>
+          <strong className="truncate whitespace-nowrap text-sm">청년도약계좌 특별중도해지 확인</strong>
         </div>
         <button className="shrink-0 rounded-lg bg-kb-yellow px-5 py-2.5 text-sm font-bold" onClick={openCustomerModal}>고객 화면에 띄우기</button>
       </div>
@@ -344,7 +367,7 @@ export function TellerPage() {
         <AnimatePresence mode="wait">
           {showDocuments ? <DocumentWorkspace key="documents" isModalOpen={isModalOpen} onClose={() => { setShowDocuments(false); setIsModalOpen(false) }} onOpenModal={() => setIsModalOpen(true)} onCloseModal={() => setIsModalOpen(false)} /> : <HomeWorkspace key="home" />}
         </AnimatePresence>
-        {!isPanelOpen && <button className="absolute right-7 top-10 z-10 grid h-12 w-12 place-items-center rounded-2xl bg-kb-yellow text-xl font-bold shadow-lg" onClick={() => setIsPanelOpen(true)} aria-label="S 패널 열기">S</button>}
+        {!isPanelOpen && <button className="absolute right-7 top-10 z-10 grid h-12 w-12 place-items-center rounded-2xl bg-kb-yellow text-primary shadow-lg" onClick={() => setIsPanelOpen(true)} aria-label="속마음 패널 열기"><MindMark className="h-8 w-8" /></button>}
         <AssistantPanel isPanelOpen={isPanelOpen} koreaTime={koreaTime} onOpenDocuments={openDocuments} onClose={() => setIsPanelOpen(false)} />
       </div>
     </main>
