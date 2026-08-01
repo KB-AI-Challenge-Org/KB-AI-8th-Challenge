@@ -3,6 +3,8 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 
 import { WorklogConfirmationPanel } from '../../../features/worklog-confirmation/ui/WorklogConfirmationPanel'
 import { useKoreaTime } from '../../../shared/lib/useKoreaTime'
+import { KbAssistantMark } from '../../../shared/ui/KbAssistantMark'
+import { KbBrandLogo } from '../../../shared/ui/KbBrandLogo'
 import { ExtractedKnowledgePage } from '../../extracted-knowledge/ui/ExtractedKnowledgePage'
 
 const frequencies = ['가끔 (월 1~2회)', '자주 (주 1회 이상)', '거의 매번']
@@ -25,15 +27,9 @@ function KnowledgeAvatar() {
   return (
     <div
       className="flex size-[54px] shrink-0 flex-col items-center justify-center gap-0.5 rounded-[22px] border border-border-default bg-surface"
-      aria-label="속마음"
+      aria-label="KB 도우미"
     >
-      <span className="relative block size-[17px]" aria-hidden="true">
-        <img className="absolute top-[0.35px] left-[7.3px] h-[16.2917px] w-[2.40833px]" src="/icons/kb-star-1.svg" alt="" />
-        <img className="absolute top-[4.15px] left-[1.35px] h-[9.20875px] w-[14.3087px]" src="/icons/kb-star-2.svg" alt="" />
-        <img className="absolute top-[4.15px] left-[1.35px] h-[9.20875px] w-[14.3087px]" src="/icons/kb-star-3.svg" alt="" />
-        <img className="absolute top-[6.8px] left-[6.8px] size-[3.4px]" src="/icons/kb-star-4.svg" alt="" />
-      </span>
-      <strong className="text-[9px]">속마음</strong>
+      <KbAssistantMark className="text-[13px]" />
     </div>
   )
 }
@@ -69,7 +65,7 @@ export function KnowledgeCapturePage() {
         >
           <header className="flex h-16 shrink-0 items-center justify-between px-7">
             <div className={`${topbarGroupClass} text-[15px]`}>
-              <strong className="text-[19px] tracking-[-0.04px]"><span aria-hidden="true">✱</span> KB 국민은행</strong>
+              <KbBrandLogo />
               <i className="h-[18px] w-px bg-border-default" />
               <strong>KB 창구업무시스템</strong>
             </div>
@@ -231,4 +227,3 @@ export function KnowledgeCapturePage() {
     </AnimatePresence>
   )
 }
-

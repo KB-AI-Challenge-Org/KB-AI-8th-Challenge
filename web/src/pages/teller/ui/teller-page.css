@@ -39,11 +39,6 @@ button {
   font-size: 15px;
 }
 
-.brand-group .kb-logo {
-  font-size: 19px;
-  letter-spacing: -0.04px;
-}
-
 .brand-group .version {
   color: var(--text-tertiary);
   font-size: 13px;

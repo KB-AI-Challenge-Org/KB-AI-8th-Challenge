@@ -35,14 +35,6 @@
   color: var(--text-secondary);
 }
 
-.extracted-kb-logo {
-  font-size: 15px;
-}
-
-.extracted-kb-logo span {
-  color: #805300;
-}
-
 .extracted-user > strong {
   padding: 6px 12px;
   border-radius: 7px;
@@ -436,4 +428,3 @@
     gap: 6px;
   }
 }
-

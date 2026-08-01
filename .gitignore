@@ -5,6 +5,8 @@
 # Root-level reference documents and prototype captures
 /*.pdf
 /*.png
+/*.docx
+/제출/
 
 # Operating-system files
 .DS_Store

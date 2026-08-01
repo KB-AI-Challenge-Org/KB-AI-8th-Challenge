@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 
 import { useKoreaTime } from '../../../shared/lib/useKoreaTime'
+import { KbBrandLogo } from '../../../shared/ui/KbBrandLogo'
 import './extracted-knowledge-page.css'
 
 const evidenceRows = [
@@ -44,7 +45,7 @@ export function ExtractedKnowledgePage({ onClose }: ExtractedKnowledgePageProps)
     >
       <header className="extracted-topbar">
         <div className="extracted-brand">
-          <strong className="extracted-kb-logo"><span aria-hidden="true">✱</span> KB 국민은행</strong>
+          <KbBrandLogo />
           <i />
           <strong>KB 창구업무시스템</strong>
         </div>
@@ -163,4 +164,3 @@ export function ExtractedKnowledgePage({ onClose }: ExtractedKnowledgePageProps)
     </motion.main>
   )
 }
-

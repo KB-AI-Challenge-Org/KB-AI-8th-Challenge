@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 
 import type { KoreaTime } from '../../../shared/lib/useKoreaTime'
 import type { TellerScreen } from '../../../shared/model/teller'
+import { KbAssistantMark } from '../../../shared/ui/KbAssistantMark'
 
 type ResponseStage = 'typing' | 'guide' | 'navigating' | 'warning'
 
@@ -134,7 +135,7 @@ export function AssistantPanel({
               transition={transition}
             >
               <article className="assistant-card document-assistant-card">
-                <strong>KB 도우미</strong>
+                <KbAssistantMark />
                 <p>좌측 화면을 법인 중도해지 서류 안내로 이동했습니다.</p>
                 <p>필수 서류와 대리인 접수 시 추가 서류를 순서대로 확인하세요.</p>
                 <ul>{documentNotices.map((notice) => <li key={notice}>{notice}</li>)}</ul>
@@ -177,7 +178,7 @@ export function AssistantPanel({
               transition={transition}
               role="status"
             >
-              <strong>KB 도우미</strong>
+              <KbAssistantMark />
               <div className="typing-bubble" aria-label="답변 작성 중">
                 {[0, 1, 2].map((dot) => (
                   <motion.span
@@ -199,7 +200,7 @@ export function AssistantPanel({
               transition={transition}
               layout
             >
-              <strong>KB 도우미</strong>
+              <KbAssistantMark />
               <p>법인 해지 접수 시 주의사항은 아래와 같습니다.</p>
               <ul>{notices.map((notice) => <li key={notice}>{notice}</li>)}</ul>
               <small>금융감독원 전자민원 | 2025-11-24 기준 · 매일 업데이트</small>
@@ -323,4 +324,3 @@ export function AssistantPanel({
     </aside>
   )
 }
-
