@@ -85,7 +85,7 @@ export function KnowledgeCapturePage({ onHome }: { onHome: () => void }) {
               <button className="relative min-w-24 cursor-pointer border-0 bg-transparent px-6 text-base font-semibold text-primary after:absolute after:inset-x-6 after:bottom-0 after:h-[3px] after:bg-kb-yellow after:content-['']" type="button">기록하기</button>
               <button className="min-w-24 cursor-pointer border-0 bg-transparent px-6 text-base font-semibold text-secondary" type="button">업무 이력</button>
             </div>
-            <strong className="rounded-full bg-primary px-3.5 py-1.5 text-[13px] font-semibold text-white">기업고객 밀집형</strong>
+            <strong className="rounded-full bg-primary px-3.5 py-1.5 text-[13px] font-semibold text-white">잠실 · 기업고객 밀집형</strong>
           </nav>
 
           <motion.div
