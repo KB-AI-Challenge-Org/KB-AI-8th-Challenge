@@ -41,7 +41,7 @@ function HomeWorkspace() {
       initial={{ opacity: 0, y: 5 }}
       animate={{ opacity: 1, y: 0 }}
     >
-      <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden px-8 py-7">
+      <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-8 py-7">
         <header className="flex shrink-0 flex-col gap-1.5">
           <div className="flex items-center gap-2.5">
             <span className="h-5 w-1 rounded-sm bg-kb-yellow" aria-hidden="true" />
@@ -160,15 +160,15 @@ function DocumentWorkspace({ isModalOpen, onClose, onOpenModal, onCloseModal }: 
         <button className="rounded-md px-2 py-1 text-sm text-secondary hover:bg-[#f3f4f5]" onClick={onClose}>닫기 ×</button>
       </div>
       <div className="mx-8 overflow-hidden rounded-[10px] border border-border-subtle">
-        <div className="grid grid-cols-[180px_1fr_110px] bg-[#f8f8f9] px-4 py-3 text-[13px] font-semibold text-secondary">
+        <div className="grid grid-cols-[200px_minmax(0,1fr)_180px] bg-[#f8f8f9] px-4 py-3 text-[13px] font-semibold text-secondary">
           <span>서류명</span><span>확인 방법</span><span className="text-center">구분</span>
         </div>
         {documents.map(([name, check, status]) => (
-          <div className="grid min-h-[52px] grid-cols-[180px_1fr_110px] items-center border-t border-border-subtle px-4 text-sm" key={name}>
-            <strong>{name}</strong><span className="text-secondary">{check}</span>
-            <div className="flex items-center justify-center gap-1">
+          <div className="grid min-h-[52px] grid-cols-[200px_minmax(0,1fr)_180px] items-center border-t border-border-subtle px-4 text-sm" key={name}>
+            <strong className="whitespace-nowrap">{name}</strong><span className="truncate whitespace-nowrap text-secondary">{check}</span>
+            <div className="flex items-center justify-center gap-1 whitespace-nowrap">
               {status === '서류 보기' ? (
-                <><button className="rounded-[7px] border border-border-default bg-white px-3 py-1.5 text-[13px] font-bold text-primary" onClick={onOpenModal}>서류 보기</button><span className="rounded-full border border-border-default px-2 py-1 text-xs">갈아타기 시</span></>
+                <><button className="rounded-[7px] border border-border-default bg-white px-3 py-1.5 text-[13px] font-bold text-primary" onClick={onOpenModal}>서류 보기</button><span className="rounded-[13px] border border-border-default bg-[#f8f8f9] px-3 py-1 text-[13px] font-bold text-secondary">갈아타기 시</span></>
               ) : <span className={`rounded-full px-3 py-1 text-xs font-semibold ${status === '필수' ? 'border border-kb-yellow' : 'bg-[#f8f8f9] text-secondary'}`}>{status}</span>}
             </div>
           </div>
