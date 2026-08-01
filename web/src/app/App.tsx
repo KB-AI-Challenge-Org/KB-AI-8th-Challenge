@@ -8,7 +8,7 @@ import { TellerPage } from '../pages/teller/ui/TellerPage'
 type AppPage = 'capture' | 'governance' | 'teller'
 
 export function App() {
-  const [page, setPage] = useState<AppPage>('capture')
+  const [page, setPage] = useState<AppPage>('teller')
 
   useEffect(() => {
     const handleShortcut = (event: KeyboardEvent) => {
@@ -18,7 +18,7 @@ export function App() {
       if (event.key === '1') setPage('capture')
       if (event.key === '2') setPage('governance')
       if (event.key === '3') setPage('teller')
-      if (event.key === 'Escape') setPage('capture')
+      if (event.key === 'Escape') setPage('teller')
     }
 
     window.addEventListener('keydown', handleShortcut)
@@ -33,7 +33,7 @@ export function App() {
           <TellerPage />
         </motion.div>
       )}
-      {page === 'governance' && <GovernancePage key="governance" onExit={() => setPage('capture')} />}
+      {page === 'governance' && <GovernancePage key="governance" onExit={() => setPage('teller')} />}
     </AnimatePresence>
   )
 }

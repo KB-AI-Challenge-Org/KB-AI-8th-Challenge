@@ -13,5 +13,9 @@
   --color-tertiary: var(--text-tertiary);
   --color-kb-yellow: var(--kb-yellow);
   --color-panel: var(--panel-bg);
+  --color-panel-surface: var(--panel-surface);
+  --color-panel-border: var(--panel-border);
+  --color-panel-text: var(--panel-text);
+  --color-panel-muted: var(--panel-muted);
+  --color-panel-dim: var(--panel-dim);
 }
-

@@ -2,325 +2,103 @@ import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 
 import type { KoreaTime } from '../../../shared/lib/useKoreaTime'
-import type { TellerScreen } from '../../../shared/model/teller'
-import { KbAssistantMark } from '../../../shared/ui/KbAssistantMark'
 
-type ResponseStage = 'typing' | 'guide' | 'navigating' | 'warning'
+type ConversationStep = 0 | 1 | 2
 
-type Conversation = {
-  id: number
-  message: string
-}
-
-export function AssistantPanel({
-  onClose,
-  isPanelOpen,
-  screen,
-  onOpenDocuments,
-  koreaTime,
-}: {
-  onClose: () => void
-  isPanelOpen: boolean
-  screen: TellerScreen
-  onOpenDocuments: () => void
-  koreaTime: KoreaTime
-}) {
+export function AssistantPanel({ onClose, isPanelOpen, onOpenDocuments, koreaTime }: { onClose: () => void; isPanelOpen: boolean; onOpenDocuments: () => void; koreaTime: KoreaTime }) {
   const [draft, setDraft] = useState('')
-  const [conversation, setConversation] = useState<Conversation | null>(null)
-  const [responseStage, setResponseStage] = useState<ResponseStage>('typing')
+  const [messages, setMessages] = useState<string[]>([])
+  const [step, setStep] = useState<ConversationStep>(0)
+  const [pendingStep, setPendingStep] = useState<1 | 2 | null>(null)
+  const [isOpeningDocuments, setIsOpeningDocuments] = useState(false)
   const chatEndRef = useRef<HTMLDivElement>(null)
-  const shouldReduceMotion = useReducedMotion()
-
-  const notices = [
-    '법인 인감증명서의 인감과 신청서 인감 일치 여부 확인',
-    '인감증명서 유효기간(발급일로부터 3개월) 확인',
-    '대리인 접수 시 위임장 및 대리인 신분증 확인',
-  ]
-
-  const documentNotices = [
-    '인감증명서 3개월 이내',
-    '신청서 인감과 법인 인감 일치',
-    '위임장·대리인 신분증 확인',
-  ]
-
-  const isResponding = conversation !== null &&
-    (responseStage === 'typing' || responseStage === 'navigating')
-  const entrance = shouldReduceMotion
-    ? { opacity: 0 }
-    : { opacity: 0, y: 12, scale: 0.985 }
-  const transition = {
-    duration: shouldReduceMotion ? 0 : 0.28,
-    ease: [0.22, 1, 0.36, 1] as const,
-  }
+  const reduceMotion = useReducedMotion()
 
   useEffect(() => {
-    if (!conversation) return
-
-    if (responseStage === 'typing') {
-      const timer = window.setTimeout(() => setResponseStage('guide'), 2_300)
-      return () => window.clearTimeout(timer)
-    }
-
-    if (responseStage === 'navigating') {
-      const timer = window.setTimeout(() => {
-        onOpenDocuments()
-        setResponseStage('warning')
-      }, 1_000)
-      return () => window.clearTimeout(timer)
-    }
-  }, [conversation, onOpenDocuments, responseStage])
+    if (!pendingStep) return
+    const timer = window.setTimeout(() => { setStep(pendingStep); setPendingStep(null) }, 2300)
+    return () => window.clearTimeout(timer)
+  }, [pendingStep])
 
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({
-      behavior: shouldReduceMotion ? 'auto' : 'smooth',
-      block: 'end',
-    })
-  }, [conversation, responseStage, shouldReduceMotion])
+    chatEndRef.current?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'end' })
+  }, [pendingStep, step, isOpeningDocuments, reduceMotion])
 
-  const submitMessage = () => {
+  const submit = () => {
     const message = draft.trim()
-    if (!message || isResponding) return
-
-    setConversation({ id: Date.now(), message })
-    setResponseStage('typing')
+    if (!message || pendingStep || isOpeningDocuments) return
+    const nextStep: 1 | 2 = step === 0 ? 1 : 2
+    setMessages((current) => nextStep === 1 ? [message] : [current[0] ?? message, message])
+    setPendingStep(nextStep)
     setDraft('')
   }
 
-  const openDocumentGuide = () => {
-    if (conversation) setResponseStage('navigating')
+  const openDocuments = () => {
+    if (step === 0 || isOpeningDocuments) return
+    setIsOpeningDocuments(true)
+    window.setTimeout(() => { onOpenDocuments(); setIsOpeningDocuments(false) }, 1000)
   }
 
-  return (
-    <aside
-      className="assistant-panel"
-      id="assistant-panel"
-      aria-hidden={!isPanelOpen}
-      inert={!isPanelOpen}
-    >
-      <header className="panel-header">
-        <strong>S 패널</strong>
-        <div className="panel-badges">
-          <span className="branch-badge">잠실역지점</span>
-          <span className="persona-pill">기업고객 밀집형</span>
-        </div>
-        <div className="window-controls">
-          <span aria-hidden="true">—</span>
-          <button type="button" onClick={onClose} aria-label="S 패널 닫기">×</button>
-        </div>
-      </header>
-
-      <div className="context-row">상담 맥락: 법인 · 기업 정기예금 중도해지</div>
-
-      <div className="chat-area" aria-live="polite">
-        <AnimatePresence initial={false} mode="popLayout">
-          {!conversation && screen === 'reception' && (
-            <motion.div
-              className="chat-empty-state"
-              key="empty"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              <span aria-hidden="true">S</span>
-              <strong>무엇을 도와드릴까요?</strong>
-              <p>업무 중 궁금한 내용을 입력해 주세요.</p>
-            </motion.div>
-          )}
-
-          {!conversation && screen === 'documents' && (
-            <motion.div
-              className="document-conversation"
-              key="document-conversation"
-              initial={entrance}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={transition}
-            >
-              <article className="assistant-card document-assistant-card">
-                <KbAssistantMark />
-                <p>좌측 화면을 법인 중도해지 서류 안내로 이동했습니다.</p>
-                <p>필수 서류와 대리인 접수 시 추가 서류를 순서대로 확인하세요.</p>
-                <ul>{documentNotices.map((notice) => <li key={notice}>{notice}</li>)}</ul>
-                <time className="assistant-time" dateTime={koreaTime.iso}>{koreaTime.message}</time>
-              </article>
-              <div className="action-message">
-                <span>실행한 작업</span>
-                <div className="message-bubble">
-                  <p>서류 안내로 이동하기</p>
-                  <time dateTime={koreaTime.iso}>{koreaTime.message} ✓✓</time>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {conversation && (
-            <motion.div
-              className="user-message interactive-user-message"
-              key={`user-${conversation.id}`}
-              initial={entrance}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={transition}
-              layout
-            >
-              <span className="speaker">나</span>
-              <div className="message-bubble">
-                <p>{conversation.message}</p>
-                <time dateTime={koreaTime.iso}>{koreaTime.message} ✓✓</time>
-              </div>
-            </motion.div>
-          )}
-
-          {conversation && responseStage === 'typing' && (
-            <motion.div
-              className="typing-indicator"
-              key={`typing-${conversation.id}`}
-              initial={entrance}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -4, scale: 0.98 }}
-              transition={transition}
-              role="status"
-            >
-              <KbAssistantMark />
-              <div className="typing-bubble" aria-label="답변 작성 중">
-                {[0, 1, 2].map((dot) => (
-                  <motion.span
-                    key={dot}
-                    animate={shouldReduceMotion ? { opacity: 1 } : { opacity: [0.35, 1, 0.35], y: [0, -4, 0] }}
-                    transition={{ duration: 0.72, repeat: Infinity, delay: dot * 0.13 }}
-                  />
-                ))}
-              </div>
-            </motion.div>
-          )}
-
-          {conversation && responseStage !== 'typing' && (
-            <motion.article
-              className="assistant-card"
-              key={`guide-${conversation.id}`}
-              initial={entrance}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={transition}
-              layout
-            >
-              <KbAssistantMark />
-              <p>법인 해지 접수 시 주의사항은 아래와 같습니다.</p>
-              <ul>{notices.map((notice) => <li key={notice}>{notice}</li>)}</ul>
-              <small>금융감독원 전자민원 | 2025-11-24 기준 · 매일 업데이트</small>
-              <div className="reference-chips">
-                <button type="button">법인 인감증명서 안내</button>
-                <button type="button">위임장 작성 예시</button>
-              </div>
-            </motion.article>
-          )}
-
-          {conversation && responseStage === 'navigating' && (
-            <motion.div
-              className="typing-indicator"
-              key={`navigating-${conversation.id}`}
-              initial={entrance}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -4, scale: 0.98 }}
-              transition={transition}
-              role="status"
-            >
-              <strong>서류 안내를 준비하는 중</strong>
-              <div className="typing-bubble" aria-label="서류 안내 화면 준비 중">
-                {[0, 1, 2].map((dot) => (
-                  <motion.span
-                    key={dot}
-                    animate={shouldReduceMotion ? { opacity: 1 } : { opacity: [0.35, 1, 0.35], y: [0, -4, 0] }}
-                    transition={{ duration: 0.72, repeat: Infinity, delay: dot * 0.13 }}
-                  />
-                ))}
-              </div>
-            </motion.div>
-          )}
-          {conversation && responseStage === 'warning' && (
-            <motion.div
-              className="action-message"
-              key={`action-${conversation.id}`}
-              initial={entrance}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={transition}
-              layout
-            >
-              <span>실행한 작업</span>
-              <div className="message-bubble">
-                <p>서류 안내로 이동하기</p>
-                <time dateTime={koreaTime.iso}>{koreaTime.message} ✓✓</time>
-              </div>
-            </motion.div>
-          )}
-          {conversation && responseStage === 'warning' && (
-            <motion.article
-              className="proactive-card"
-              key={`warning-${conversation.id}`}
-              initial={entrance}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ ...transition, delay: shouldReduceMotion ? 0 : 0.08 }}
-              layout
-            >
-              <div className="proactive-head">
-                <span aria-hidden="true">⚠</span>
-                <strong>접수 확인 필요 — 제3자 수령계좌</strong>
-              </div>
-              <div className="proactive-copy">
-                <p>해지대금 수령계좌가 대표자 개인계좌로 입력되었습니다.</p>
-                <p>수령 사유와 내부 승인근거를 접수 전에 확인하세요.</p>
-              </div>
-              <div className="source-item">
-                <span className="source-badge regulation">① 규정 근거</span>
-                <p>제3자 계좌 수령 시 수령 사유 및 내부 승인근거 기록 필수 — 예금 해지 업무 내규</p>
-              </div>
-              <div className="source-item">
-                <span className="source-badge branch">② 우리 지점 노하우</span>
-                <p>대표자 개인계좌 수령 건은 담당 RM 사전 확인 후 접수 — 행원 인터뷰 · 관리자 승인됨</p>
-              </div>
-              <div className="feedback-row">
-                <div className="feedback-chips">
-                  <button type="button">도움됨</button>
-                  <button type="button">도움 안 됨</button>
-                  <button type="button">사실과 다름</button>
-                </div>
-                <time dateTime={koreaTime.iso}>{koreaTime.message}</time>
-              </div>
-            </motion.article>
-          )}
-        </AnimatePresence>
-        <div className="chat-end" ref={chatEndRef} aria-hidden="true" />
+  const transition = { duration: reduceMotion ? 0 : 0.26, ease: [0.22, 1, 0.36, 1] as const }
+  const bubble = (message: string, key: string) => (
+    <motion.div className="flex w-full justify-end" key={key} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={transition}>
+      <div className="flex w-[300px] flex-col gap-1.5 rounded-xl bg-[#393427] px-[15px] pb-2.5 pt-3 text-sm text-panel-text">
+        <p className="m-0 leading-[1.55]">{message}</p><time className="self-end text-xs text-panel-dim" dateTime={koreaTime.iso}>{koreaTime.message}</time>
       </div>
+    </motion.div>
+  )
 
-      <div className="panel-bottom">
-        <AnimatePresence initial={false}>
-          {conversation && responseStage === 'guide' && screen === 'reception' && (
-            <motion.div
-              className="quick-actions"
-              key={`quick-actions-${conversation.id}`}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 4 }}
-              transition={{ duration: shouldReduceMotion ? 0 : 0.18 }}
-            >
-              <button type="button" onClick={openDocumentGuide}>서류 안내로 이동하기</button>
-              <button type="button">유사 사례 더보기</button>
-            </motion.div>
-          )}
-        </AnimatePresence>        <form
-          className="chat-input"
-          onSubmit={(event) => {
-            event.preventDefault()
-            submitMessage()
-          }}
-        >
-          <input
-            aria-label="도우미에게 질문"
-            placeholder="궁금한 내용을 입력해 주세요."
-            value={draft}
-            onChange={(event) => setDraft(event.target.value)}
-          />
-          <button type="submit" aria-label="질문 보내기" disabled={!draft.trim() || isResponding}>↑</button>
+  return (
+    <aside className={`flex h-full min-w-0 flex-col overflow-hidden rounded-[14px] bg-panel text-panel-text transition-[width,flex-basis,opacity,transform] duration-300 ${isPanelOpen ? 'w-[420px] basis-[420px] opacity-100' : 'w-0 basis-0 translate-x-[440px] opacity-0'}`} aria-hidden={!isPanelOpen} inert={!isPanelOpen}>
+      <header className="flex shrink-0 items-center justify-between px-5 pb-3.5 pt-[18px]">
+        <strong className="text-base">S 패널</strong>
+        <div className="flex items-center gap-3"><span className="rounded-full bg-kb-yellow px-3.5 py-1.5 text-[13px] font-semibold text-primary">기업고객 밀집형</span><span className="text-panel-dim">—</span><button className="grid h-6 w-6 place-items-center rounded text-panel-dim hover:bg-[#303235] hover:text-panel-text" onClick={onClose} aria-label="S 패널 닫기">×</button></div>
+      </header>
+      <div className="h-8 shrink-0 border-b border-panel-border px-5 text-[13px] text-panel-muted">{step > 0 || pendingStep ? '상담 중 · 청년 고객 · KB청년미래적금' : ''}</div>
+      <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-5 pb-2.5 pt-[18px]" aria-live="polite">
+        {step === 0 && !pendingStep && <div className="m-auto text-center text-sm font-medium text-panel-muted">오늘은 어떤 업무를 해결해볼까요?</div>}
+        {(messages[0] && (pendingStep === 1 || step >= 1)) && bubble(messages[0], 'first-user')}
+        {pendingStep === 1 && <TypingIndicator reduceMotion={Boolean(reduceMotion)} />}
+        {step >= 1 && (
+          <motion.div className="flex flex-col gap-3" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={transition}>
+            <AgentCard>
+              <p>손해 없습니다. 갈아타기 기간에 신청하면 청년도약계좌를 특별중도해지해도 약정된 기본·우대금리를 그대로 받습니다.</p>
+              <Bullet>기존 도약계좌 납입분 금리 손해 없음 (특별중도해지)</Bullet><Bullet>갈아타기 신청은 앱에서 — 서금원 대상자 확인 후 개설</Bullet><Bullet>1인 1계좌 — 도약계좌 해지 확인 후 개설</Bullet>
+              <small>KB 상품설명서 기준 · 매일 업데이트</small>
+            </AgentCard>
+            {step === 1 && !pendingStep && <button className="w-full rounded-lg bg-kb-yellow py-2.5 text-sm font-bold text-primary" onClick={openDocuments}>관련 서류 안내</button>}
+            <article className="rounded-xl border-[1.5px] border-kb-yellow bg-panel-surface px-4 py-3.5">
+              <strong className="text-[15px]">우리 지점 실무 팁</strong>
+              <div className="mt-2 border-t border-panel-border py-2"><b className="text-sm">갈아타기 문의는 ‘손해 없음’부터 안내하세요</b><p className="my-1 text-[13px] leading-5 text-panel-muted">기존 납입분 금리 손해를 걱정하는 고객이 대부분이에요. 특별중도해지로 약정 금리가 유지된다는 점부터 안내하면 상담이 빨라집니다.</p><small className="text-xs text-panel-dim">행원 인터뷰 · 노출 41회</small></div>
+              <div className="border-t border-panel-border py-2"><b className="text-sm">신청 기간을 먼저 확인하세요</b><p className="my-1 text-[13px] leading-5 text-panel-muted">정책상품이라 기수별 신청 기간이 있어요. 기간 밖이면 다음 기수 일정 안내가 재방문을 줄입니다.</p><small className="text-xs text-panel-dim">업무일지 · 260724</small></div>
+              <div className="flex gap-1.5">{['도움됨', '도움 안 됨', '사실과 다름'].map((label) => <button className="rounded-md border border-panel-border px-2.5 py-1 text-xs font-semibold text-panel-muted" key={label}>{label}</button>)}</div>
+            </article>
+          </motion.div>
+        )}
+        {(messages[1] && (pendingStep === 2 || step === 2)) && bubble(messages[1], 'second-user')}
+        {pendingStep === 2 && <TypingIndicator reduceMotion={Boolean(reduceMotion)} />}
+        {step === 2 && (
+          <motion.div className="flex flex-col gap-3" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={transition}>
+            <AgentCard><p>본인 신분증만 확인하시면 됩니다. 나머지는 시스템에서 자동 확인돼요.</p><Bullet>신분증 원본으로 본인 확인</Bullet><Bullet>서금원 대상자 확인 결과 자동 연동</Bullet><Bullet>갈아타기면 도약계좌 해지 동의 확인</Bullet></AgentCard>
+            <button className="w-full rounded-lg bg-kb-yellow py-2.5 text-sm font-bold text-primary" onClick={openDocuments}>관련 서류 안내</button>
+          </motion.div>
+        )}
+        <AnimatePresence>{isOpeningDocuments && <motion.div className="flex items-center gap-2 text-[13px] text-panel-muted" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><span>서류 안내를 준비하는 중</span><TypingDots reduceMotion={Boolean(reduceMotion)} /></motion.div>}</AnimatePresence>
+        <div ref={chatEndRef} />
+      </div>
+      <div className="flex shrink-0 flex-col gap-3 px-5 pb-4 pt-3">
+        <form className="flex items-center rounded-[22px] border border-panel-border bg-[#1b1d1f] py-2 pl-4 pr-2" onSubmit={(event) => { event.preventDefault(); submit() }}>
+          <input className="min-w-0 flex-1 border-0 bg-transparent p-0 text-sm text-panel-text outline-none placeholder:text-panel-dim" placeholder="궁금한 내용을 입력해 주세요." value={draft} onChange={(event) => setDraft(event.target.value)} />
+          <button className="grid h-8 w-8 place-items-center rounded-full bg-kb-yellow text-[15px] font-bold text-primary disabled:opacity-40" type="submit" disabled={!draft.trim() || Boolean(pendingStep) || isOpeningDocuments} aria-label="질문 보내기">↑</button>
         </form>
-        <div className="report-row"><button type="button">신고하기</button></div>
-        <p className="disclaimer">AI는 참고용이며, 최종 판단과 책임은 담당자에게 있습니다.</p>
+        <div className="flex justify-end"><button className="rounded-md border border-panel-border px-3 py-1.5 text-[13px] text-panel-muted">신고하기</button></div>
+        <p className="m-0 text-center text-[13px] text-panel-dim">AI는 참고용이며, 최종 판단과 책임은 담당자에게 있습니다.</p>
       </div>
     </aside>
   )
 }
+
+function AgentCard({ children }: { children: React.ReactNode }) { return <article className="flex flex-col gap-2.5 rounded-xl border border-panel-border bg-panel-surface px-4 pb-[13px] pt-3.5 text-sm leading-[1.55]"><div className="flex items-center gap-2"><span className="h-2 w-2 rounded bg-kb-yellow" /><strong>속마음</strong></div>{children}</article> }
+function Bullet({ children }: { children: React.ReactNode }) { return <div className="flex gap-2"><span className="font-bold text-kb-yellow">•</span><span>{children}</span></div> }
+function TypingDots({ reduceMotion }: { reduceMotion: boolean }) { return <span className="flex gap-1">{[0,1,2].map((dot) => <motion.i className="h-1.5 w-1.5 rounded-full bg-kb-yellow" key={dot} animate={reduceMotion ? { opacity: 1 } : { opacity: [0.3,1,0.3], y: [0,-3,0] }} transition={{ duration: 0.72, repeat: Infinity, delay: dot * 0.13 }} />)}</span> }
+function TypingIndicator({ reduceMotion }: { reduceMotion: boolean }) { return <motion.div className="flex items-center gap-2 rounded-xl border border-panel-border bg-panel-surface px-3.5 py-3" initial={{ opacity: 0 }} animate={{ opacity: 1 }}><TypingDots reduceMotion={reduceMotion} /></motion.div> }
