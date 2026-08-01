@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 
 import { useKoreaTime } from '../../../shared/lib/useKoreaTime'
 import type { TellerScreen } from '../../../shared/model/teller'
+import { KbBrandLogo } from '../../../shared/ui/KbBrandLogo'
 import { AssistantPanel } from '../../../widgets/assistant-panel/ui/AssistantPanel'
 import './teller-page.css'
 
@@ -241,7 +242,7 @@ export function TellerPage() {
     <main className="banking-app">
       <header className="topbar">
         <div className="brand-group">
-          <strong className="kb-logo">KB 국민은행</strong>
+          <KbBrandLogo />
           <span className="divider" />
           <strong>KB 창구업무시스템</strong>
         </div>
@@ -296,4 +297,3 @@ export function TellerPage() {
     </main>
   )
 }
-
