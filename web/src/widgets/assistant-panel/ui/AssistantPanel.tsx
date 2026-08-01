@@ -53,7 +53,7 @@ export function AssistantPanel({ onClose, isPanelOpen, onOpenDocuments, koreaTim
     <aside className={`flex h-full min-w-0 flex-col overflow-hidden rounded-[14px] bg-panel text-panel-text transition-[width,flex-basis,opacity,transform] duration-300 ${isPanelOpen ? 'w-[420px] basis-[420px] opacity-100' : 'w-0 basis-0 translate-x-[440px] opacity-0'}`} aria-hidden={!isPanelOpen} inert={!isPanelOpen}>
       <header className="flex shrink-0 items-center justify-between px-5 pb-3.5 pt-[18px]">
         <strong className="flex items-center gap-2 text-base"><MindMark className="h-6 w-6 text-kb-yellow" /><span>패널</span></strong>
-        <div className="flex items-center gap-3"><span className="rounded-full bg-kb-yellow px-3.5 py-1.5 text-[13px] font-semibold text-primary">기업고객 밀집형</span><span className="text-panel-dim">—</span><button className="grid h-6 w-6 place-items-center rounded text-panel-dim hover:bg-[#303235] hover:text-panel-text" onClick={onClose} aria-label="속마음 패널 닫기">×</button></div>
+        <div className="flex items-center gap-3"><span className="rounded-full bg-kb-yellow px-3.5 py-1.5 text-[13px] font-semibold text-primary">잠실 · 기업고객 밀집형</span><span className="text-panel-dim">—</span><button className="grid h-6 w-6 place-items-center rounded text-panel-dim hover:bg-[#303235] hover:text-panel-text" onClick={onClose} aria-label="속마음 패널 닫기">×</button></div>
       </header>
       <div className="h-8 shrink-0 border-b border-panel-border px-5 text-[13px] text-panel-muted">{step > 0 || pendingStep ? '상담 중 · 청년 고객 · KB청년미래적금' : ''}</div>
       <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-5 pb-2.5 pt-[18px]" aria-live="polite">
@@ -63,11 +63,11 @@ export function AssistantPanel({ onClose, isPanelOpen, onOpenDocuments, koreaTim
         {step >= 1 && (
           <motion.div className="flex flex-col gap-3" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={transition}>
             <AgentCard>
-              <p>갈아타기는 가능합니다. 다만 순서가 중요합니다. 가입 가능 통보 후 KB청년미래적금 계좌를 먼저 개설하고, 그다음 기존 청년도약계좌를 특별중도해지해야 합니다.</p>
-              <Bullet>특별중도해지 시 정부기여금과 이자소득 비과세 혜택 유지</Bullet><Bullet>기본·우대금리는 KB 특약과 실제 우대조건 충족 여부에 따라 적용</Bullet><Bullet>KB청년미래적금 계좌 개설 → 청년도약계좌 특별중도해지</Bullet>
+              <p>청년도약계좌 갈아타기는 최초 가입신청 기간(2026. 6. 22.~7. 3.)에 신청하고 심사를 거쳐 가입 가능 통보를 받은 고객만 진행할 수 있습니다. 해당 고객은 계좌개설 기간(7. 27.~8. 7.) 안에 KB청년미래적금 계좌를 먼저 개설한 뒤 기존 청년도약계좌의 특별중도해지를 신청해야 합니다.</p>
+              <Bullet>갈아타기 요건을 충족한 특별중도해지 시 정부기여금과 비과세 혜택 유지</Bullet><Bullet>기본·우대금리는 KB 특약과 실제 우대조건 충족 여부에 따라 적용</Bullet><Bullet>KB청년미래적금 계좌 개설 → 청년도약계좌 특별중도해지</Bullet>
               <small>금융위원회·KB 청년도약계좌 특약 기준 · 2026. 6. 22. 시행</small>
             </AgentCard>
-            {step === 1 && !pendingStep && <button className="w-full rounded-lg bg-kb-yellow py-2.5 text-sm font-bold text-primary" onClick={openDocuments}>관련 서류 안내</button>}
+            {step === 1 && !pendingStep && <button className="w-full rounded-lg bg-kb-yellow py-2.5 text-sm font-bold text-primary" onClick={openDocuments}>가입 준비·확인사항</button>}
             <article className="rounded-xl border-[1.5px] border-kb-yellow bg-panel-surface px-4 py-3.5">
               <strong className="text-[15px]">우리 지점 실무 팁</strong>
               <div className="mt-2 border-t border-panel-border py-2"><b className="text-sm">갈아타기는 ‘계좌 개설 먼저’라고 안내하세요</b><p className="my-1 text-[13px] leading-5 text-panel-muted">기존 청년도약계좌를 먼저 해지하면 갈아타기로 인정되지 않습니다. KB청년미래적금 계좌를 개설한 뒤 특별중도해지를 진행하도록 안내하세요.</p><small className="text-xs text-panel-dim">금융위원회 안내 · 260615</small></div>
@@ -81,10 +81,10 @@ export function AssistantPanel({ onClose, isPanelOpen, onOpenDocuments, koreaTim
         {step === 2 && (
           <motion.div className="flex flex-col gap-3" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={transition}>
             <AgentCard><p>일반적인 가입 심사는 서민금융진흥원 연계정보로 진행되어 별도 서류가 없는 경우가 많습니다. 다만 정보 확인이 어렵거나 정정이 필요한 고객은 추가 증빙을 요청받을 수 있습니다.</p><Bullet>앱에서 가입 신청 후 서금원 심사 결과 확인</Bullet><Bullet>가입 가능 통보 후 KB청년미래적금 계좌 개설</Bullet><Bullet>계좌 개설 후 기존 청년도약계좌 특별중도해지</Bullet></AgentCard>
-            <button className="w-full rounded-lg bg-kb-yellow py-2.5 text-sm font-bold text-primary" onClick={openDocuments}>관련 서류 안내</button>
+            <button className="w-full rounded-lg bg-kb-yellow py-2.5 text-sm font-bold text-primary" onClick={openDocuments}>가입 준비·확인사항</button>
           </motion.div>
         )}
-        <AnimatePresence>{isOpeningDocuments && <motion.div className="flex items-center gap-2 text-[13px] text-panel-muted" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><span>서류 안내를 준비하는 중</span><TypingDots reduceMotion={Boolean(reduceMotion)} /></motion.div>}</AnimatePresence>
+        <AnimatePresence>{isOpeningDocuments && <motion.div className="flex items-center gap-2 text-[13px] text-panel-muted" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><span>가입 확인사항을 준비하는 중</span><TypingDots reduceMotion={Boolean(reduceMotion)} /></motion.div>}</AnimatePresence>
         <div ref={chatEndRef} />
       </div>
       <div className="flex shrink-0 flex-col gap-3 px-5 pb-4 pt-3">

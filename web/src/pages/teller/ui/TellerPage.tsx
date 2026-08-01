@@ -21,8 +21,8 @@ const tips = [
 const documents = [
   ['본인 확인', 'KB스타뱅킹 본인인증으로 가입 신청', '필수'],
   ['서민금융진흥원 가입요건 확인', '연계정보로 심사 — 필요 시 추가 증빙', '자동 확인'],
-  ['청년도약계좌 특별중도해지 확인', '청년미래적금 계좌 개설 후 기존 계좌 특별중도해지', '서류 보기'],
-  ['자동이체 등록 정보', '우대금리용 — 급여이체·적금 자동이체 계좌 지정', '선택'],
+  ['청년도약계좌 특별중도해지 확인', '청년미래적금 계좌 개설 후 기존 계좌 특별중도해지', '확인 내용 보기'],
+  ['자동이체 설정', '적금 납입 자동이체 계좌 지정', '선택'],
 ]
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
@@ -109,8 +109,8 @@ function DocumentModal({ onClose }: { onClose: () => void }) {
       >
         <header className="flex shrink-0 items-center justify-between border-b border-border-subtle px-6 py-4">
           <div>
-            <strong className="block text-[17px]">청년도약계좌 특별중도해지 신청·확인서</strong>
-            <span className="mt-1 block text-xs text-secondary">시연용 서류 미리보기 · 고객 확인 필요</span>
+            <strong className="block text-[17px]">청년도약계좌 갈아타기 고객 확인서</strong>
+            <span className="mt-1 block text-xs text-secondary">시연용 · 공식 신청서 아님</span>
           </div>
           <button className="grid h-8 w-8 place-items-center rounded-lg text-lg text-secondary hover:bg-[#f3f4f5]" onClick={onClose} aria-label="상세 창 닫기">×</button>
         </header>
@@ -131,8 +131,8 @@ function DocumentModal({ onClose }: { onClose: () => void }) {
             </div>
 
             <div className="relative py-7 text-center">
-              <p className="m-0 text-[11px] font-semibold tracking-[0.2em] text-secondary">청년미래적금 갈아타기</p>
-              <h2 className="mb-0 mt-3 text-[24px] font-bold tracking-[-0.035em]">청년도약계좌 특별중도해지<br />신청·확인서</h2>
+              <p className="m-0 text-[11px] font-semibold tracking-[0.2em] text-secondary">청년도약계좌 → KB청년미래적금</p>
+              <h2 className="mb-0 mt-3 text-[24px] font-bold tracking-[-0.035em]">갈아타기 고객 확인서</h2>
             </div>
 
             <p className="relative m-0 text-[13px] leading-[1.8] text-[#3f4144]">
@@ -177,7 +177,7 @@ function DocumentModal({ onClose }: { onClose: () => void }) {
               <div className="mt-3 flex flex-col gap-3 text-[13px] leading-5 text-secondary">
                 {[
                   'KB청년미래적금 계좌 개설 전에 청년도약계좌를 해지하면 갈아타기로 인정되지 않음을 확인했습니다.',
-                  '갈아타기 특별중도해지 시 정부기여금과 이자소득 비과세 혜택이 유지됨을 안내받았습니다.',
+                  '갈아타기 요건을 충족한 특별중도해지 시 정부기여금과 이자소득 비과세 혜택이 유지됨을 안내받았습니다.',
                   '적용 금리는 KB 청년도약계좌 특약 및 실제 우대금리 충족 여부에 따라 결정됨을 확인했습니다.',
                 ].map((item) => (
                   <div className="flex items-start gap-3" key={item}>
@@ -215,7 +215,7 @@ function DocumentModal({ onClose }: { onClose: () => void }) {
           <div className="flex gap-2">
             <button className="rounded-lg border border-border-default bg-white px-4 py-2 text-sm font-semibold" onClick={onClose}>닫기</button>
             <button className="rounded-lg border border-border-default bg-white px-4 py-2 text-sm font-semibold">인쇄 미리보기</button>
-            <button className="rounded-lg bg-kb-yellow px-4 py-2 text-sm font-bold">고객 화면에 띄우기</button>
+            <button className="rounded-lg bg-kb-yellow px-4 py-2 text-sm font-bold">고객 태블릿에 띄우기</button>
           </div>
         </footer>
       </motion.section>
@@ -261,7 +261,7 @@ function CustomerDisplayModal({
           <div className="flex flex-col items-center px-8 py-10 text-center">
             <span className="grid h-14 w-14 place-items-center rounded-full bg-kb-yellow text-2xl font-black">✓</span>
             <h3 className="mb-0 mt-5 text-xl">고객 화면이 준비되었습니다</h3>
-            <p className="mb-0 mt-2 text-sm leading-6 text-secondary">청년도약계좌 특별중도해지 확인 화면을 고객용 디스플레이에 표시할 준비가 완료되었습니다.</p>
+            <p className="mb-0 mt-2 text-sm leading-6 text-secondary">청년도약계좌 갈아타기 고객 확인 화면을 고객용 디스플레이에 표시할 준비가 완료되었습니다.</p>
             <button className="mt-7 min-w-28 rounded-lg bg-kb-yellow px-5 py-2.5 text-sm font-bold" onClick={onClose}>확인</button>
           </div>
         ) : (
@@ -272,11 +272,11 @@ function CustomerDisplayModal({
                   <span className="rounded-[13px] border border-border-default bg-white px-3 py-1 text-[13px] font-bold text-secondary">고객 서명 필요</span>
                   <span className="text-[13px] font-semibold text-secondary">1건</span>
                 </div>
-                <h3 className="mb-0 mt-4 text-lg">청년도약계좌 특별중도해지 확인</h3>
+                <h3 className="mb-0 mt-4 text-lg">청년도약계좌 갈아타기 고객 확인</h3>
                 <p className="mb-0 mt-2 text-sm leading-6 text-secondary">청년미래적금 계좌 개설 후 진행하는 특별중도해지 내용을 고객이 직접 확인합니다.</p>
                 <div className="mt-4 grid grid-cols-2 overflow-hidden rounded-lg border border-border-subtle bg-white text-sm">
                   <div className="border-r border-border-subtle px-4 py-3"><span className="block text-xs text-tertiary">고객명</span><strong className="mt-1 block">이○○</strong></div>
-                  <div className="px-4 py-3"><span className="block text-xs text-tertiary">표시 항목</span><strong className="mt-1 block">동의서 · 전자서명</strong></div>
+                  <div className="px-4 py-3"><span className="block text-xs text-tertiary">표시 항목</span><strong className="mt-1 block">확인 내용 · 전자서명</strong></div>
                 </div>
               </div>
               <div className="flex gap-3 rounded-[10px] border border-kb-yellow bg-[#fffbee] px-4 py-3">
@@ -308,22 +308,22 @@ function DocumentWorkspace({ isModalOpen, onClose, onOpenModal, onCloseModal }: 
     <motion.section className="relative flex h-full min-w-0 flex-1 flex-col overflow-hidden rounded-xl border border-border-subtle bg-white" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
       <div className="flex items-start justify-between px-8 pb-3 pt-7">
         <div>
-          <SectionTitle>관련 서류 안내</SectionTitle>
+          <SectionTitle>가입 준비·확인사항</SectionTitle>
           <p className="mb-0 mt-2 text-[13px] text-secondary">KB청년미래적금 · 신규 가입 (청년도약계좌 갈아타기 포함)</p>
         </div>
         <button className="rounded-md px-2 py-1 text-sm text-secondary hover:bg-[#f3f4f5]" onClick={onClose}>닫기 ×</button>
       </div>
       <div className="mx-8 overflow-hidden rounded-[10px] border border-border-subtle">
         <div className="grid grid-cols-[200px_minmax(0,1fr)_180px] bg-[#f8f8f9] px-4 py-3 text-[13px] font-semibold text-secondary">
-          <span>서류명</span><span>확인 방법</span><span className="text-center">구분</span>
+          <span>확인 항목</span><span>확인 방법</span><span className="text-center">구분</span>
         </div>
         {documents.map(([name, check, status]) => (
           <div className="grid min-h-[52px] grid-cols-[200px_minmax(0,1fr)_180px] items-center border-t border-border-subtle px-4 text-sm" key={name}>
             <strong className="whitespace-nowrap">{name}</strong><span className="truncate whitespace-nowrap text-secondary">{check}</span>
             <div className="flex items-center justify-center gap-1 whitespace-nowrap">
-              {status === '서류 보기' ? (
-                <><button className="rounded-[7px] border border-border-default bg-white px-3 py-1.5 text-[13px] font-bold text-primary" onClick={onOpenModal}>서류 보기</button><span className="rounded-[13px] border border-border-default bg-[#f8f8f9] px-3 py-1 text-[13px] font-bold text-secondary">갈아타기 시</span></>
-              ) : <span className={`rounded-full px-3 py-1 text-xs font-semibold ${status === '필수' ? 'border border-kb-yellow' : 'bg-[#f8f8f9] text-secondary'}`}>{status}</span>}
+              {status === '확인 내용 보기' ? (
+                <button className="inline-flex h-8 w-[116px] items-center justify-center rounded-[7px] border border-border-default bg-white text-[13px] font-bold text-primary" onClick={onOpenModal}>확인 내용 보기</button>
+              ) : <span className={`inline-flex h-8 w-[116px] items-center justify-center rounded-[7px] text-[13px] font-bold ${status === '필수' ? 'border border-kb-yellow' : 'bg-[#f8f8f9] text-secondary'}`}>{status}</span>}
             </div>
           </div>
         ))}
@@ -331,10 +331,10 @@ function DocumentWorkspace({ isModalOpen, onClose, onOpenModal, onCloseModal }: 
       <p className="mx-8 mb-0 mt-4 text-xs text-tertiary">상품설명서 기준이며, 정책상품 특성상 가입일 안내가 달라질 수 있습니다.</p>
       <div className="mx-8 mt-5 flex items-center justify-between gap-6 rounded-[10px] border border-border-subtle bg-[#f8f8f9] px-5 py-4">
         <div className="flex min-w-0 items-center gap-3">
-          <span className="shrink-0 rounded-[13px] border border-border-default bg-white px-3 py-1 text-[13px] font-bold text-secondary">고객 서명 1건</span>
-          <strong className="truncate whitespace-nowrap text-sm">청년도약계좌 특별중도해지 확인</strong>
+          <span className="shrink-0 rounded-[13px] border border-border-default bg-white px-3 py-1 text-[13px] font-bold text-secondary">고객 확인 1건</span>
+          <strong className="truncate whitespace-nowrap text-sm">청년도약계좌 갈아타기 고객 확인</strong>
         </div>
-        <button className="shrink-0 rounded-lg bg-kb-yellow px-5 py-2.5 text-sm font-bold" onClick={openCustomerModal}>고객 화면에 띄우기</button>
+        <button className="shrink-0 rounded-lg bg-kb-yellow px-5 py-2.5 text-sm font-bold" onClick={openCustomerModal}>고객 태블릿에 띄우기</button>
       </div>
       <AnimatePresence>{isModalOpen && <DocumentModal onClose={onCloseModal} />}</AnimatePresence>
       <AnimatePresence>
