@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 
 import type { KoreaTime } from '../../../shared/lib/useKoreaTime'
+import { MindMark } from '../../../shared/ui/KbBrandLogo'
 
 type ConversationStep = 0 | 1 | 2
 
@@ -51,8 +52,8 @@ export function AssistantPanel({ onClose, isPanelOpen, onOpenDocuments, koreaTim
   return (
     <aside className={`flex h-full min-w-0 flex-col overflow-hidden rounded-[14px] bg-panel text-panel-text transition-[width,flex-basis,opacity,transform] duration-300 ${isPanelOpen ? 'w-[420px] basis-[420px] opacity-100' : 'w-0 basis-0 translate-x-[440px] opacity-0'}`} aria-hidden={!isPanelOpen} inert={!isPanelOpen}>
       <header className="flex shrink-0 items-center justify-between px-5 pb-3.5 pt-[18px]">
-        <strong className="text-base">S 패널</strong>
-        <div className="flex items-center gap-3"><span className="rounded-full bg-kb-yellow px-3.5 py-1.5 text-[13px] font-semibold text-primary">기업고객 밀집형</span><span className="text-panel-dim">—</span><button className="grid h-6 w-6 place-items-center rounded text-panel-dim hover:bg-[#303235] hover:text-panel-text" onClick={onClose} aria-label="S 패널 닫기">×</button></div>
+        <strong className="flex items-center gap-2 text-base"><MindMark className="h-6 w-6 text-kb-yellow" /><span>패널</span></strong>
+        <div className="flex items-center gap-3"><span className="rounded-full bg-kb-yellow px-3.5 py-1.5 text-[13px] font-semibold text-primary">기업고객 밀집형</span><span className="text-panel-dim">—</span><button className="grid h-6 w-6 place-items-center rounded text-panel-dim hover:bg-[#303235] hover:text-panel-text" onClick={onClose} aria-label="속마음 패널 닫기">×</button></div>
       </header>
       <div className="h-8 shrink-0 border-b border-panel-border px-5 text-[13px] text-panel-muted">{step > 0 || pendingStep ? '상담 중 · 청년 고객 · KB청년미래적금' : ''}</div>
       <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-5 pb-2.5 pt-[18px]" aria-live="polite">
@@ -62,14 +63,14 @@ export function AssistantPanel({ onClose, isPanelOpen, onOpenDocuments, koreaTim
         {step >= 1 && (
           <motion.div className="flex flex-col gap-3" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={transition}>
             <AgentCard>
-              <p>손해 없습니다. 갈아타기 기간에 신청하면 청년도약계좌를 특별중도해지해도 약정된 기본·우대금리를 그대로 받습니다.</p>
-              <Bullet>기존 도약계좌 납입분 금리 손해 없음 (특별중도해지)</Bullet><Bullet>갈아타기 신청은 앱에서 — 서금원 대상자 확인 후 개설</Bullet><Bullet>1인 1계좌 — 도약계좌 해지 확인 후 개설</Bullet>
-              <small>KB 상품설명서 기준 · 매일 업데이트</small>
+              <p>갈아타기는 가능합니다. 다만 순서가 중요합니다. 가입 가능 통보 후 KB청년미래적금 계좌를 먼저 개설하고, 그다음 기존 청년도약계좌를 특별중도해지해야 합니다.</p>
+              <Bullet>특별중도해지 시 정부기여금과 이자소득 비과세 혜택 유지</Bullet><Bullet>기본·우대금리는 KB 특약과 실제 우대조건 충족 여부에 따라 적용</Bullet><Bullet>KB청년미래적금 계좌 개설 → 청년도약계좌 특별중도해지</Bullet>
+              <small>금융위원회·KB 청년도약계좌 특약 기준 · 2026. 6. 22. 시행</small>
             </AgentCard>
             {step === 1 && !pendingStep && <button className="w-full rounded-lg bg-kb-yellow py-2.5 text-sm font-bold text-primary" onClick={openDocuments}>관련 서류 안내</button>}
             <article className="rounded-xl border-[1.5px] border-kb-yellow bg-panel-surface px-4 py-3.5">
               <strong className="text-[15px]">우리 지점 실무 팁</strong>
-              <div className="mt-2 border-t border-panel-border py-2"><b className="text-sm">갈아타기 문의는 ‘손해 없음’부터 안내하세요</b><p className="my-1 text-[13px] leading-5 text-panel-muted">기존 납입분 금리 손해를 걱정하는 고객이 대부분이에요. 특별중도해지로 약정 금리가 유지된다는 점부터 안내하면 상담이 빨라집니다.</p><small className="text-xs text-panel-dim">행원 인터뷰 · 노출 41회</small></div>
+              <div className="mt-2 border-t border-panel-border py-2"><b className="text-sm">갈아타기는 ‘계좌 개설 먼저’라고 안내하세요</b><p className="my-1 text-[13px] leading-5 text-panel-muted">기존 청년도약계좌를 먼저 해지하면 갈아타기로 인정되지 않습니다. KB청년미래적금 계좌를 개설한 뒤 특별중도해지를 진행하도록 안내하세요.</p><small className="text-xs text-panel-dim">금융위원회 안내 · 260615</small></div>
               <div className="border-t border-panel-border py-2"><b className="text-sm">신청 기간을 먼저 확인하세요</b><p className="my-1 text-[13px] leading-5 text-panel-muted">정책상품이라 기수별 신청 기간이 있어요. 기간 밖이면 다음 기수 일정 안내가 재방문을 줄입니다.</p><small className="text-xs text-panel-dim">업무일지 · 260724</small></div>
               <div className="flex gap-1.5">{['도움됨', '도움 안 됨', '사실과 다름'].map((label) => <button className="rounded-md border border-panel-border px-2.5 py-1 text-xs font-semibold text-panel-muted" key={label}>{label}</button>)}</div>
             </article>
@@ -79,7 +80,7 @@ export function AssistantPanel({ onClose, isPanelOpen, onOpenDocuments, koreaTim
         {pendingStep === 2 && <TypingIndicator reduceMotion={Boolean(reduceMotion)} />}
         {step === 2 && (
           <motion.div className="flex flex-col gap-3" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={transition}>
-            <AgentCard><p>본인 신분증만 확인하시면 됩니다. 나머지는 시스템에서 자동 확인돼요.</p><Bullet>신분증 원본으로 본인 확인</Bullet><Bullet>서금원 대상자 확인 결과 자동 연동</Bullet><Bullet>갈아타기면 도약계좌 해지 동의 확인</Bullet></AgentCard>
+            <AgentCard><p>일반적인 가입 심사는 서민금융진흥원 연계정보로 진행되어 별도 서류가 없는 경우가 많습니다. 다만 정보 확인이 어렵거나 정정이 필요한 고객은 추가 증빙을 요청받을 수 있습니다.</p><Bullet>앱에서 가입 신청 후 서금원 심사 결과 확인</Bullet><Bullet>가입 가능 통보 후 KB청년미래적금 계좌 개설</Bullet><Bullet>계좌 개설 후 기존 청년도약계좌 특별중도해지</Bullet></AgentCard>
             <button className="w-full rounded-lg bg-kb-yellow py-2.5 text-sm font-bold text-primary" onClick={openDocuments}>관련 서류 안내</button>
           </motion.div>
         )}

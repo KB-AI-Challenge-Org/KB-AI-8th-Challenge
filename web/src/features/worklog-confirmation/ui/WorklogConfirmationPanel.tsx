@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 
+import { MindMark } from '../../../shared/ui/KbBrandLogo'
+
 import './worklog-confirmation-panel.css'
 
 const workLogs = [
@@ -55,7 +57,7 @@ export function WorklogConfirmationPanel({ onClose, onConfirm }: WorklogConfirma
         transition={panelTransition}
       >
         <header className="worklog-panel-header">
-          <div><strong>KB</strong><span>|</span><strong>S 패널</strong></div>
+          <div><strong>KB</strong><span>|</span><strong className="inline-flex items-center gap-1.5"><MindMark className="h-5 w-5" /><span>패널</span></strong></div>
           <div><span aria-hidden="true">—</span><button type="button" onClick={onClose} aria-label="업무일지 패널 닫기">×</button></div>
         </header>
 
