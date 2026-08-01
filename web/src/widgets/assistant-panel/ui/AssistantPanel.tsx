@@ -92,7 +92,6 @@ export function AssistantPanel({ onClose, isPanelOpen, onOpenDocuments, koreaTim
           <input className="min-w-0 flex-1 border-0 bg-transparent p-0 text-sm text-panel-text outline-none placeholder:text-panel-dim" placeholder="궁금한 내용을 입력해 주세요." value={draft} onChange={(event) => setDraft(event.target.value)} />
           <button className="grid h-8 w-8 place-items-center rounded-full bg-kb-yellow text-[15px] font-bold text-primary disabled:opacity-40" type="submit" disabled={!draft.trim() || Boolean(pendingStep) || isOpeningDocuments} aria-label="질문 보내기">↑</button>
         </form>
-        <div className="flex justify-end"><button className="rounded-md border border-panel-border px-3 py-1.5 text-[13px] text-panel-muted">신고하기</button></div>
         <p className="m-0 text-center text-[13px] text-panel-dim">AI는 참고용이며, 최종 판단과 책임은 담당자에게 있습니다.</p>
       </div>
     </aside>

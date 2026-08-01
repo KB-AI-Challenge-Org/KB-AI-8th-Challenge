@@ -1,6 +1,7 @@
 type KbBrandLogoProps = {
   className?: string
   onDark?: boolean
+  onClick?: () => void
 }
 
 type MindMarkProps = {
@@ -8,16 +9,29 @@ type MindMarkProps = {
   title?: string
 }
 
-export function KbBrandLogo({ className = '', onDark = false }: KbBrandLogoProps) {
-  return (
-    <span className={`inline-flex shrink-0 items-center ${onDark ? 'rounded-md bg-white px-2 py-1' : ''}`}>
-      <img
-        className={`block h-8 w-auto ${className}`}
-        src="/brand/kb-brand-logo.svg"
-        alt="KB 국민은행"
-      />
-    </span>
+export function KbBrandLogo({ className = '', onDark = false, onClick }: KbBrandLogoProps) {
+  const logo = (
+    <img
+      className={`block h-8 w-auto ${className}`}
+      src="/brand/kb-brand-logo.svg"
+      alt="KB 국민은행"
+    />
   )
+
+  if (onClick) {
+    return (
+      <button
+        className={`inline-flex shrink-0 cursor-pointer items-center focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-kb-yellow ${onDark ? 'rounded-md border-0 bg-white px-2 py-1' : 'border-0 bg-transparent p-0'}`}
+        type="button"
+        onClick={onClick}
+        aria-label="속마음 업무지원 홈으로 이동"
+      >
+        {logo}
+      </button>
+    )
+  }
+
+  return <span className={`inline-flex shrink-0 items-center ${onDark ? 'rounded-md bg-white px-2 py-1' : ''}`}>{logo}</span>
 }
 
 export function MindMark({ className = '', title = '속마음' }: MindMarkProps) {
