@@ -1,0 +1,11 @@
+# Local Codex and deployment state
+.codex-preview/
+.vercel/
+
+# Root-level reference documents and prototype captures
+/*.pdf
+/*.png
+
+# Operating-system files
+.DS_Store
+Thumbs.db
