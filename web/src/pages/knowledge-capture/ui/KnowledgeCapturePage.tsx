@@ -34,7 +34,7 @@ function KnowledgeAvatar() {
   )
 }
 
-export function KnowledgeCapturePage() {
+export function KnowledgeCapturePage({ onHome }: { onHome: () => void }) {
   const koreaTime = useKoreaTime()
   const shouldReduceMotion = useReducedMotion()
   const [selectedFrequency, setSelectedFrequency] = useState<string | null>(null)
@@ -53,7 +53,7 @@ export function KnowledgeCapturePage() {
   return (
     <AnimatePresence mode="wait" initial={false}>
       {view === 'review' ? (
-        <ExtractedKnowledgePage key="extracted-knowledge" onClose={() => setView('capture')} />
+        <ExtractedKnowledgePage key="extracted-knowledge" onClose={() => setView('capture')} onHome={onHome} />
       ) : (
         <motion.main
           key="knowledge-capture"
@@ -65,7 +65,7 @@ export function KnowledgeCapturePage() {
         >
           <header className="flex h-16 shrink-0 items-center justify-between px-7">
             <div className={`${topbarGroupClass} text-[15px]`}>
-              <KbBrandLogo />
+              <KbBrandLogo onClick={onHome} />
               <i className="h-[18px] w-px bg-border-default" />
               <strong>KB 창구업무시스템</strong>
             </div>

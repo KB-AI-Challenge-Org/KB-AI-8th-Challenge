@@ -12,7 +12,7 @@ export function GovernanceSidebar({
 }) {
   return (
     <aside className="governance-sidebar">
-      <KbBrandLogo className="h-7" onDark />
+      <KbBrandLogo className="h-7" onDark onClick={onExit} />
       <div className="governance-console-title">
         <strong>거버넌스 콘솔</strong>
         <div><b>지점장 전용</b><span>우리 지점 관리</span></div>

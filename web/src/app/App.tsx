@@ -27,10 +27,10 @@ export function App() {
 
   return (
     <AnimatePresence initial={false} mode="wait">
-      {page === 'capture' && <KnowledgeCapturePage key="capture" />}
+      {page === 'capture' && <KnowledgeCapturePage key="capture" onHome={() => setPage('teller')} />}
       {page === 'teller' && (
         <motion.div key="teller" className="app-page" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-          <TellerPage />
+          <TellerPage onHome={() => setPage('teller')} />
         </motion.div>
       )}
       {page === 'governance' && <GovernancePage key="governance" onExit={() => setPage('teller')} />}

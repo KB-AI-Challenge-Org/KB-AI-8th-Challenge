@@ -132,7 +132,7 @@ function DocumentModal({ onClose }: { onClose: () => void }) {
 
             <div className="relative py-7 text-center">
               <p className="m-0 text-[11px] font-semibold tracking-[0.2em] text-secondary">청년미래적금 갈아타기</p>
-              <h2 className="mb-0 mt-3 text-[24px] tracking-[-0.035em]">청년도약계좌 특별중도해지<br />신청·확인서</h2>
+              <h2 className="mb-0 mt-3 text-[24px] font-bold tracking-[-0.035em]">청년도약계좌 특별중도해지<br />신청·확인서</h2>
             </div>
 
             <p className="relative m-0 text-[13px] leading-[1.8] text-[#3f4144]">
@@ -350,7 +350,7 @@ function DocumentWorkspace({ isModalOpen, onClose, onOpenModal, onCloseModal }: 
   )
 }
 
-export function TellerPage() {
+export function TellerPage({ onHome }: { onHome: () => void }) {
   const [isPanelOpen, setIsPanelOpen] = useState(true)
   const [showDocuments, setShowDocuments] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -360,7 +360,7 @@ export function TellerPage() {
   return (
     <main className="flex h-screen min-h-[810px] min-w-[1440px] flex-col bg-canvas text-primary">
       <header className="flex h-16 shrink-0 items-center justify-between px-7">
-        <div className="flex items-center gap-3.5"><KbBrandLogo className="!h-6" /><span className="h-[18px] w-px bg-border-default" /><strong className="text-[15px]">속마음 업무지원</strong></div>
+        <div className="flex items-center gap-3.5"><KbBrandLogo className="!h-6" onClick={onHome} /><span className="h-[18px] w-px bg-border-default" /><strong className="text-[15px]">속마음 업무지원</strong></div>
         <div className="flex items-center gap-4 text-[15px]"><strong>잠실역지점</strong><span className="h-[18px] w-px bg-border-default" /><span>최영환 (L1)</span><time className="text-secondary" dateTime={koreaTime.iso}>{koreaTime.clock}</time><button className="rounded-full border border-border-default bg-white px-[18px] py-2 text-sm font-bold">로그아웃</button></div>
       </header>
       <div className={`relative flex min-h-0 flex-1 items-start gap-5 overflow-hidden px-7 pb-6 pt-7 transition-[gap] duration-300 ${isPanelOpen ? '' : 'gap-0'}`}>

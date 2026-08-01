@@ -21,9 +21,10 @@ const scoreRows = [
 
 type ExtractedKnowledgePageProps = {
   onClose: () => void
+  onHome: () => void
 }
 
-export function ExtractedKnowledgePage({ onClose }: ExtractedKnowledgePageProps) {
+export function ExtractedKnowledgePage({ onClose, onHome }: ExtractedKnowledgePageProps) {
   const koreaTime = useKoreaTime()
   const shouldReduceMotion = useReducedMotion()
   const [title, setTitle] = useState('법인 제3자 수령계좌 지정 시 위임장·인감증명서 사전 요청')
@@ -45,7 +46,7 @@ export function ExtractedKnowledgePage({ onClose }: ExtractedKnowledgePageProps)
     >
       <header className="extracted-topbar">
         <div className="extracted-brand">
-          <KbBrandLogo />
+          <KbBrandLogo onClick={onHome} />
           <i />
           <strong>KB 창구업무시스템</strong>
         </div>
