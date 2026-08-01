@@ -4,12 +4,13 @@ type KbAssistantMarkProps = {
 
 export function KbAssistantMark({ className = '' }: KbAssistantMarkProps) {
   return (
-    <strong
-      className={`inline-flex items-center gap-px font-extrabold tracking-[-0.04em] text-[#776c61] ${className}`}
-      aria-label="KB"
-    >
-      <span className="text-[#f6a800]" aria-hidden="true">✱</span>
-      <span aria-hidden="true">B</span>
+    <strong className="inline-flex items-center" aria-label="KB">
+      <img
+        className={`block h-[13px] w-auto ${className}`}
+        src="/brand/kb-wordmark.svg"
+        alt=""
+        aria-hidden="true"
+      />
     </strong>
   )
 }

@@ -29,7 +29,7 @@ function KnowledgeAvatar() {
       className="flex size-[54px] shrink-0 flex-col items-center justify-center gap-0.5 rounded-[22px] border border-border-default bg-surface"
       aria-label="KB 도우미"
     >
-      <KbAssistantMark className="text-[13px]" />
+      <KbAssistantMark className="h-[15px]" />
     </div>
   )
 }
