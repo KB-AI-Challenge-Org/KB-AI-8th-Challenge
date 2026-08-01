@@ -168,7 +168,7 @@ function DocumentWorkspace({ isModalOpen, onClose, onOpenModal, onCloseModal }: 
             <strong>{name}</strong><span className="text-secondary">{check}</span>
             <div className="flex items-center justify-center gap-1">
               {status === '서류 보기' ? (
-                <><button className="rounded-full bg-kb-yellow px-3 py-1 text-xs font-bold" onClick={onOpenModal}>서류 보기</button><span className="rounded-full border border-border-default px-2 py-1 text-xs">갈아타기 시</span></>
+                <><button className="rounded-[7px] border border-border-default bg-white px-3 py-1.5 text-[13px] font-bold text-primary" onClick={onOpenModal}>서류 보기</button><span className="rounded-full border border-border-default px-2 py-1 text-xs">갈아타기 시</span></>
               ) : <span className={`rounded-full px-3 py-1 text-xs font-semibold ${status === '필수' ? 'border border-kb-yellow' : 'bg-[#f8f8f9] text-secondary'}`}>{status}</span>}
             </div>
           </div>
@@ -187,7 +187,7 @@ export function TellerPage() {
   const [showDocuments, setShowDocuments] = useState(false)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const koreaTime = useKoreaTime()
-  const openDocuments = useCallback(() => { setShowDocuments(true); setIsModalOpen(true) }, [])
+  const openDocuments = useCallback(() => { setShowDocuments(true); setIsModalOpen(false) }, [])
 
   return (
     <main className="flex h-screen min-h-[720px] flex-col bg-canvas text-primary">
